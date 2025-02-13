@@ -72,7 +72,7 @@ cd CryoParticleSegment
 
 ## Tutorials and Guides
 
-For detailed documentation and analysis on both synthetic and real datasets, check out our [Example Notebook](notebooks/).
+For detailed documentation and analysis on both synthetic and real datasets, check out our [Example Notebook](notebook/).
 
 ---
 

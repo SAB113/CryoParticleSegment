@@ -8,7 +8,12 @@
 
 ## Usage:
 
-### Generate Simulated Micrograph without Noise
+### Tutorials
+
+Referring to [micrograph_source.ipynb](micrograph_source.ipynb) for the details about synthetic dataset generation.
+
+### Other useful utiliies
+#### Generate Simulated Micrograph without Noise
 
 To generate simulated micrograph without noise, use the following code:
 
@@ -31,7 +36,7 @@ simulated_micrograph_directory/
 └── sim_image_83.star
 ```
 
-### Split the Dataset
+#### Split the Dataset
 
 The generated simulated micrographs should be split into train-validation-test manually:
 
@@ -59,7 +64,7 @@ simulated_micrograph_directory/
     └── sim_image_83.star
 ```
 
-### Generate Simulated Micrograph with Noise
+#### Generate Simulated Micrograph with Noise
 
 To generate simulated micrograph with noise under given SNR (default: 0.1), use the following code:
 
@@ -93,7 +98,7 @@ noisy_image_directory/
     └── sim_image_83.star
 ```
 
-### Generate Ground Truth
+#### Generate Ground Truth
 
 To generate ground truth of the simulated micrographs, use the following code:
 

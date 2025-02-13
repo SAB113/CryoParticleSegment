@@ -8,7 +8,7 @@ Explore our comprehensive tutorial series designed to guide you through every st
   - **Focus**: Generate segmentation maps for real datasets.
   - **Key Components**: Environment setup, dataset download, exploratory data analysis, application of various thresholding methods, and segmentation mask generation.
 
-- **[00-B_Dataset preprocessing.ipynb](00-B_Dataset preprocessing.ipynb)**
+- **[00-B_Dataset preprocessing.ipynb](00-B_Dataset%20preprocessing.ipynb)**
   - **Focus**: Create training, validation, and testing splits.
   - **Key Components**: Adjusting data ratios and storing datasets in NumPy format for streamlined processing.
 

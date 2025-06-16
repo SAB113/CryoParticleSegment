@@ -2,11 +2,16 @@
 
 Explore our comprehensive tutorial series designed to guide you through every stage of using the CRISP framework—from segmentation to downstream particle analysis. The series is divided into two main sections: the core segmentation pipeline and a practical downstream analysis example focused on particle picking.
 
+### The dataset
+> Please refer to the [table here](https://github.com/BioinfoMachineLearning/cryoppp?tab=readme-ov-file#cryoppp-statistics) for the available datasets in CryoPPP and their statistics.  
+> For additional details about micrograph features in CryoPPP, see the [table in the paper](https://static-content.springer.com/esm/art%3A10.1038%2Fs41597-023-02280-2/MediaObjects/41597_2023_2280_MOESM4_ESM.xlsx).
+
 ### Main Segmentation Framework
 
 - **[00-A_Mask_Generator_clean.ipynb](00-A_Mask_Generator_clean.ipynb)**
   - **Focus**: Generate segmentation maps for real datasets.
   - **Key Components**: Environment setup, dataset download, exploratory data analysis, application of various thresholding methods, and segmentation mask generation.
+  - To proceed, please obtain a LICENSE ID of CryoSPARC from [this page](https://cryosparc.com/download).
 
 - **[00-B_Dataset preprocessing.ipynb](00-B_Dataset%20preprocessing.ipynb)**
   - **Focus**: Create training, validation, and testing splits.
@@ -33,3 +38,5 @@ Explore our comprehensive tutorial series designed to guide you through every st
 - **[05_cryosparc.ipynb](05_cryosparc.ipynb)**
   - **Focus**: Perform 3D reconstruction.
   - **Key Components**: Setting up the environment and providing detailed instructions for executing 3D reconstruction workflows.
+  - To proceed, please obtain a LICENSE ID of CryoSPARC from [this page](https://cryosparc.com/download).
+

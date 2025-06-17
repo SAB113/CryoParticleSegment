@@ -133,47 +133,50 @@ class MicrographDataset(Dataset):
       return image, mask
 
 class MicrographDatasetSingle(Dataset):
-  """
-  Dataset for cryo-EM dataset.
-  The micrographs and ground truths will be random crop to `crop_size`.
-  """
-  def __init__(self, image_dir, label_dir, filenames=None, crop_size=(512, 512), img_ext='.npy', crop=3840):
-    self.image_dir = image_dir
-    self.label_dir = label_dir
-    if filenames is not None:
-      self.filenames = filenames
-    else:
-      self.filenames = sorted(os.listdir(image_dir))
-    basenames = [os.path.splitext(filename)[0] for filename in filenames]
-    self.images = [os.path.join(image_dir, basename+img_ext) for basename in basenames]
-    self.labels = [os.path.join(label_dir, basename+'.png') for basename in basenames]
-    if crop: # To be formalized.
-      self.crop = transforms.CenterCrop(3840) # = 4096-256, uses because of the property of EMPIAR-10017
-    else:
-      self.crop = None
-    self.crop_size = crop_size
+    """
+    Dataset for cryo-EM with a single random crop per image.
+    If label_dir=None, returns a zero mask instead.
+    """
+    def __init__(self, image_dir, label_dir=None, filenames=None,
+                 crop_size=(512, 512), img_ext='.npy', crop=3840):
+        self.image_dir = image_dir
+        self.label_dir = label_dir
+        self.filenames = filenames if filenames is not None else sorted(os.listdir(image_dir))
+        basenames = [os.path.splitext(f)[0] for f in self.filenames]
+        self.images = [os.path.join(image_dir, b + img_ext) for b in basenames]
+        if label_dir is not None:
+            self.labels = [os.path.join(label_dir, b + '.png') for b in basenames]
+        else:
+            self.labels = [None] * len(basenames)
 
-  def __len__(self):
-    return len(self.images)
+        self.crop = transforms.CenterCrop(3840) if crop else None
+        self.crop_size = crop_size
 
-  def __getitem__(self, idx):
-    mask = TF.to_tensor(Image.open(self.labels[idx]).convert("L"))
-    image = torch.from_numpy(np.load(self.images[idx]).reshape((-1,mask.shape[1], mask.shape[2]))) # (4096, 4096) is the image size of micrographs EMPIAR-10017
-    #mask = mask.long()
-    return self.transform(image, mask)
+    def __len__(self):
+        return len(self.images)
 
-  def transform(self, image, mask):
-    if self.crop:
-        image = self.crop(image)
-        mask = self.crop(mask)
+    def __getitem__(self, idx):
+        if self.label_dir is not None:
+            mask = TF.to_tensor(Image.open(self.labels[idx]).convert("L"))
+        else:
+            img_np = np.load(self.images[idx])
+            H, W = img_np.shape[-2], img_np.shape[-1]
+            mask = torch.zeros((1, H, W), dtype=torch.uint8)
 
-    i, j, h, w = transforms.RandomCrop.get_params(
-      image, output_size=self.crop_size)
-    image = TF.crop(image, i, j, h, w)
-    mask = TF.crop(mask, i, j, h, w)
-    #mask = torch.concat([1-mask, mask], dim=0) # Remove this line if background is not consider.
-    return image, mask.long()
+        img_np = np.load(self.images[idx])
+        image = torch.from_numpy(img_np.reshape((-1, mask.shape[1], mask.shape[2])))
+        return self.transform(image, mask)
 
+    def transform(self, image, mask):
+        if self.crop:
+            image = self.crop(image)
+            mask = self.crop(mask)
+
+        i, j, h, w = transforms.RandomCrop.get_params(image, output_size=self.crop_size)
+        image = TF.crop(image, i, j, h, w)
+        mask = TF.crop(mask, i, j, h, w)
+        return image, mask.long()
+        
 class MicrographDatasetEvery(MicrographDatasetSingle):
   """
   Dataset for cryo-EM dataset.

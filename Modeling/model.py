@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from collections import OrderedDict
 from convcrf import GaussCRF, ConvCRF
-import CRF
+
 
 def create_model(backbone, addout=True):
     if addout:
@@ -55,6 +55,8 @@ class ModelWithGausscrf(nn.Module):
 
 
 try:
+    import CRF
+
     class ModelWithFWCRF(nn.Module):
         """Combined Model class for UNET with configurable Frank-Wolfe CRF."""
         def __init__(self, backbone, crf, use_unary_only=False):

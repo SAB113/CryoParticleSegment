@@ -1,15 +1,18 @@
 import setuptools
 from torch.utils.cpp_extension import CppExtension, BuildExtension, CUDAExtension
-
+import torch
 import site
 site.ENABLE_USER_SITE = True
 
 # setuptools.setup()
 
-nvcc_ARCH  = ['-arch=sm_70']
+major, minor = torch.cuda.get_device_capability()
+arch = major * 10 + minor
+
+nvcc_ARCH  = [f"-gencode=arch=compute_{arch},code=sm_{arch}"]
 # nvcc_ARCH += ["-gencode=arch=compute_75,code=\"compute_75\""]
 # nvcc_ARCH += ["-gencode=arch=compute_75,code=\"sm_75\""]
-nvcc_ARCH += ["-gencode=arch=compute_70,code=\"sm_70\""]
+# nvcc_ARCH += ["-gencode=arch=compute_70,code=\"sm_70\""]
 # nvcc_ARCH += ["-gencode=arch=compute_61,code=\"sm_61\""]
 # nvcc_ARCH += ["-gencode=arch=compute_52,code=\"sm_52\""]
 extra_compile_args = { 

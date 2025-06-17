@@ -12,7 +12,7 @@ def normalize(im):
     img_original=(255*((im-min_mrc)/(max_mrc-min_mrc))).astype(np.uint8)
     return(img_original)
 
-def min_rect_circle(cont):
+def min_rect_circle(cont, radius):
     contours_poly = cv2.approxPolyDP(cont, 3, True)
     center, _= cv2.minEnclosingCircle(contours_poly)
     rect=cv2.minAreaRect(cont)

@@ -20,6 +20,7 @@ Explore our comprehensive tutorial series designed to guide you through every st
 - **[01_training_models_clean.ipynb](01_training_models_clean.ipynb)**
   - **Focus**: Train segmentation models using various architectures.
   - **Key Components**: Experimentation with different architectures, encoders, loss functions, and metrics, alongside performance visualization and benchmarking.
+  - The platform is built on top of `segmentation_models.pytorch`. Most segmentation models, encoders, and loss functions are expected to work out of the box, although some untested options may require minor modifications. You can find the available [models here](https://smp.readthedocs.io/en/latest/models.html), [encoders here](https://smp.readthedocs.io/en/latest/models.html), and [loss functions here](https://smp.readthedocs.io/en/latest/losses.html). You can also customize your own modules, as described [here](https://smp.readthedocs.io/en/latest/insights.html).
 
 - **[02_finetune_with_crf_clean.ipynb](02_finetune_with_crf_clean.ipynb)**
   - **Focus**: Fine-tune segmentation models with a CRF layer.

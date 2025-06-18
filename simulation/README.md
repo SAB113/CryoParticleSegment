@@ -10,7 +10,7 @@
 
 ### Tutorials
 
-Referring to [micrograph_source.ipynb](micrograph_source.ipynb) for the details about synthetic dataset generation.
+Referring to [micrograph_simulation.ipynb](micrograph_simulation.ipynb) for the details about synthetic dataset generation.
 
 ### Other useful utiliies
 #### Generate Simulated Micrograph without Noise

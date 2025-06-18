@@ -1,4 +1,7 @@
 # CRF - Conditional Random Fields
+
+Please see [https://github.com/netw0rkf10w/CRF](https://github.com/netw0rkf10w/CRF) for the original project!
+
 A library for dense conditional random fields (CRFs).
 
 This is the official 

@@ -84,7 +84,7 @@ def numpy_to_PIL(image: NDArray) -> Image:
     return Image.fromarray(image).convert('L')
 
 
-def self2binary(image: NDArray[np.float_]) -> NDArray[np.uint8]:
+def self2binary(image: NDArray[np.float64]) -> NDArray[np.uint8]:
     """
     Convert image to binary.
 
@@ -98,7 +98,7 @@ def self2binary(image: NDArray[np.float_]) -> NDArray[np.uint8]:
     clean_image = processing(clean_image)
     return clean_image
 
-def self2binary2(image: NDArray[np.float_]) -> NDArray[np.uint8]:
+def self2binary2(image: NDArray[np.float64]) -> NDArray[np.uint8]:
     """
     Convert image to binary.
 

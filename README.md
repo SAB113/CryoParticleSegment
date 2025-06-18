@@ -8,7 +8,7 @@ CRISP is a modular framework that facilitates experimentation with advanced imag
 
 ## Features
 
-- **Automated Label Generation**: Automatically create high-quality ground truth segmentation maps.
+- **Automated Label Generation**: Automatically create high-quality reference segmentation maps.
 - **Modular Segmentation Package**: Customize and experiment with a variety of segmentation strategies.
 - **Advanced CRF Layer**: Integrates a novel Conditional Random Fields layer utilizing a regularized Frank-Wolfe algorithm and class-discriminative features to refine coarse pixel-level predictions.
 

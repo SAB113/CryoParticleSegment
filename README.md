@@ -11,7 +11,7 @@ CRISP is a modular framework that facilitates experimentation with advanced imag
 - **Automated Label Generation**: Automatically create high-quality reference segmentation maps.
 - **Modular Segmentation Package**: Customize and experiment with a variety of segmentation strategies.
 - **Advanced CRF Layer**: Integrates a novel Conditional Random Fields layer utilizing a regularized Frank-Wolfe algorithm and class-discriminative features to refine coarse pixel-level predictions.
-
+- **Center finding algorithm with hyperparameter search**: Integrates several center-finding algorithms for downstream particle picking task and the best configurations is found by our proposed hyperparameter search algorithms.
 ---
 
 ## Manuscript
@@ -93,4 +93,4 @@ CRISP is open-source software released under the [GNU General Public License, Ve
 
 - Builds upon the work developed by [segmentation_models.pytorch](https://github.com/qubvel-org/segmentation_models.pytorch).
 - Integrates code from the [CRF - Conditional Random Fields](https://github.com/netw0rkf10w/CRF) project.
-- The NMS and Morphology and contour finding algorithms are implemented according to the descriptions and built upon the code of [PIXER](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-2614-y) and [CASSPER](https://www.nature.com/articles/s42003-021-01721-1).
+- The NMS and Morphology and contour finding algorithms are implemented according to the descriptions and built upon the description and code of [PIXER](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-2614-y) and [CASSPER](https://www.nature.com/articles/s42003-021-01721-1).

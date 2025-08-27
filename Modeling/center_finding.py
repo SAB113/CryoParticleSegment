@@ -7,12 +7,32 @@ import pycuda.autoinit  # Automatically initializes CUDA, creates a context whic
 
 
 def normalize(im):
+    """
+    Normalizes image pixel values to 0-255 range for visualization.
+    
+    Args:
+        im (numpy.ndarray): Input image array
+        
+    Returns:
+        numpy.ndarray: Normalized image as uint8 with values in [0, 255]
+    """
     max_mrc=np.max(im)
     min_mrc=np.min(im)
     img_original=(255*((im-min_mrc)/(max_mrc-min_mrc))).astype(np.uint8)
     return(img_original)
 
 def min_rect_circle(cont, radius):
+    """
+    Finds the center of a contour using minimum enclosing circle method.
+    Validates that the contour size is appropriate for the given radius.
+    
+    Args:
+        cont: OpenCV contour object
+        radius (int): Expected particle radius in pixels
+        
+    Returns:
+        tuple or None: (x, y) center coordinates if valid, None otherwise
+    """
     contours_poly = cv2.approxPolyDP(cont, 3, True)
     center, _= cv2.minEnclosingCircle(contours_poly)
     rect=cv2.minAreaRect(cont)
@@ -25,6 +45,19 @@ def min_rect_circle(cont, radius):
         pass
 
 def eliminate_near(fields):
+    """
+    Removes nearby duplicate particle detections to prevent overclustering.
+    Uses distance threshold based on global 'radius' variable.
+    
+    Args:
+        fields (list): List of (x, y) coordinate pairs
+        
+    Returns:
+        numpy.ndarray: Indices of particles to keep after elimination
+        
+    Note:
+        This function relies on a global 'radius' variable being defined.
+    """
     fields=np.array(fields,dtype=np.int32)
     i=np.arange(len(fields))
     diff=fields.reshape(len(fields),1,2)-fields
@@ -464,20 +497,25 @@ def checkScore(score):
         
         
 def pad_image(image_array):
-    # Get the current height and width of the image
+    """
+    Pads rectangular image to make it square while preserving aspect ratio.
+    Uses minimum pixel value as padding to avoid introducing artifacts.
+    
+    Args:
+        image_array (numpy.ndarray): 2D input image array
+        
+    Returns:
+        numpy.ndarray: Square padded image with same data type as input
+    """
     height, width = image_array.shape
-
-    # Find the smallest pixel value in the image to use as padding value
     min_pixel_value = np.min(image_array)
-
-    # Determine the size of padding needed
+    
     if height > width:
         diff = height - width
-        padding = ((0, 0), (0, diff))  # Padding only to the right
+        padding = ((0, 0), (0, diff))  # Padding to the right
     else:
         diff = width - height
-        padding = ((0, diff), (0, 0))  # Padding only to the bottom
-
-    # Apply padding, using the smallest pixel value found
+        padding = ((0, diff), (0, 0))  # Padding to the bottom
+    
     padded_image = np.pad(image_array, padding, mode='constant', constant_values=min_pixel_value)
     return padded_image

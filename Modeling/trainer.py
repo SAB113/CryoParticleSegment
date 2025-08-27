@@ -1,4 +1,12 @@
-"""Trainer."""
+"""
+Training and evaluation classes for cryo-EM segmentation models.
+
+This module provides comprehensive training utilities including:
+- Base trainer and evaluator classes
+- Specialized trainers for semantic segmentation
+- CryoEM-specific trainers with patch-based processing
+- Learning rate scheduling and callbacks
+"""
 from collections import OrderedDict
 import gc
 import random
@@ -17,7 +25,22 @@ __all__ = ["Evaluator", "Trainer", "TrainerWithScheduler", "SemanticSegmentation
            "CryoEMEvaluator", "CryoEMTrainer", "CryoEMTrainerWithScheduler", "tqdm_plugin_for_Trainer"]
 
 class Evaluator():
+    """
+    Base evaluator class for model validation and testing.
+    
+    Provides framework for evaluating segmentation models with various metrics.
+    Supports custom step actions and extensible evaluation protocols.
+    """
     def __init__(self, model, device, metrics, num_classes: int = 2):
+        """
+        Initialize evaluator with model and evaluation parameters.
+        
+        Args:
+            model: PyTorch model to evaluate
+            device: Device to run evaluation on ('cuda' or 'cpu')
+            metrics: List of metric names to compute
+            num_classes (int): Number of segmentation classes. Defaults to 2.
+        """
         self.model = model.to(device)
         self.device = device
         self.metrics = metrics
@@ -71,8 +94,19 @@ class Evaluator():
 
 class Trainer(Evaluator):
     """
-    This trainer class is implemented only for four usages:
-      Training, evaluation, prediction, and saving model.
+    Comprehensive trainer class for deep learning model training.
+    
+    Supports training, evaluation, prediction, and model saving with:
+    - Flexible loss functions and optimizers
+    - Learning rate scheduling
+    - Early stopping and model checkpointing
+    - Validation monitoring and logging
+    
+    Primary usage scenarios:
+    - Training segmentation models from scratch
+    - Fine-tuning pre-trained models
+    - Model evaluation and validation
+    - Inference and prediction
     """
     def __init__(self, model, train_dataset, criterion, optimizer, device, 
                    metrics=['loss'], val_metrics=None, num_classes = 2, lr_scheduler=None):
@@ -277,6 +311,15 @@ class SemanticSegmentationTrainer(Trainer):
 
 
 class CryoEMTrainer(SemanticSegmentationTrainer):
+    """
+    Specialized trainer for cryo-EM image segmentation.
+    
+    Handles large micrographs through patch-based processing:
+    - Splits large images into manageable patches during inference
+    - Reconstructs full-size predictions from patch outputs
+    - Memory-efficient processing for high-resolution cryo-EM data
+    - Specialized evaluation metrics for particle segmentation
+    """
     def __init__(self, *arg, **kwarg):
         super().__init__(*arg, **kwarg)
     

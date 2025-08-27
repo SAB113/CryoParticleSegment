@@ -1,8 +1,8 @@
 # CRISP
 
-**A Modular Framework for Cryo-EM Image Segmentation and Processing with Conditional Random Field**
+**A Modular Framework for Cryo-EM Image Segmentation and Processing with Conditional Random Fields**
 
-CRISP is a modular framework that facilitates experimentation with advanced image segmentation strategies for cryo-electron microscopy (cryo-EM). It streamlines the process of generating high-quality segmentation maps and integrates seamlessly with downstream workflows.
+CRISP is a modular framework that facilitates experimentation with advanced image segmentation strategies for cryo-electron microscopy (cryo-EM). It streamlines the process of generating high-quality segmentation maps and integrates seamlessly with downstream workflows for particle picking and analysis.
 
 ---
 
@@ -11,7 +11,7 @@ CRISP is a modular framework that facilitates experimentation with advanced imag
 - **Automated Segmentation Mask Generation**: Automatically create high-quality reference segmentation maps.
 - **Modular Segmentation Package**: Customize and experiment with a variety of segmentation strategies.
 - **Advanced CRF Layer**: Integrates a novel Conditional Random Fields layer utilizing a regularized Frank-Wolfe algorithm and class-discriminative features to refine coarse pixel-level predictions.
-- **Center finding algorithm with hyperparameter search**: Integrates several center-finding algorithms for downstream particle picking task and the best configurations is found by our proposed hyperparameter search algorithms.
+- **Center Finding Algorithm with Hyperparameter Search**: Integrates several center-finding algorithms for downstream particle picking tasks, with optimal configurations determined through our proposed hyperparameter search algorithms.
 ---
 
 ## Manuscript
@@ -37,7 +37,7 @@ CRISP is a modular framework that facilitates experimentation with advanced imag
 
 ## Installation
 
-While we recommend using [Google Colab](https://colab.google/) for the best user experience, you can also install CRISP locally by following these steps:
+While we recommend using [Google Colab](https://colab.research.google.com) for the best user experience and easier setup, you can also install CRISP locally by following these steps:
 
 ### Prerequisites
 
@@ -54,8 +54,10 @@ conda activate CRISP
 ### Install Dependencies
 
 ```bash
-pip install mrcfile torch scikit-image ipython_genutils notebook
+pip install mrcfile torch scikit-image ipython_genutils notebook segmentation_models_pytorch
 ```
+
+**Note**: Additional dependencies may be required depending on your specific use case. Please refer to the individual notebook files for any specialized requirements.
 
 ---
 
@@ -68,20 +70,20 @@ git clone https://github.com/phonchi/CryoParticleSegment.git
 cd CryoParticleSegment
 ```
 
-## Support components
+## Supported Components
 
 | Component | Short Description |
 | :--- | :--- |
 | **Segmentation Mask Generation Pipeline** | **(Automates the creation of training masks from particle coordinates)** |
 | Projection-Based Mask Generation | Generates masks by creating an initial 3D map from a few particle coordinates, reprojecting a 3D mask into 2D, and binarizing the result. This is the recommended default method. |
 | Circle-Based Mask Approximation | An alternative method for lower-quality data that generates coarse masks by drawing fixed-radius circles at particle coordinates, requiring no 3D reconstruction. |
-| Synthetic Dataset Simulation | Creates artificial micrographs and corresponding perfect masks from known 3D structures, simulating realistic noise levels (e.g., SNR 0.005) for controlled experiments. |
+| Synthetic Dataset Simulation | Creates artificial micrographs and corresponding perfect masks from known 3D structures, simulating realistic noise levels (e.g., SNR 0.005) for controlled experiments and validation. |
 | **Preprocessing** | **(Prepares images for efficient model training)** |
 | Patch-based approach | Divides large micrographs into smaller patches (e.g., $512 \times 512$ pixels). During training, random patches are used to save memory; during inference, overlapping patches are processed and merged with a soft weighting scheme for a seamless result. |
 | **Modular Segmentation Pipeline** | **(The core deep learning framework for segmenting particles)** |
-| Segmentation Models & Encoders | A flexible framework allowing users to combine various models and encoders. The default configuration uses a UNet++ model with an EfficientNet-B5 encoder.  [Supported segmentaion models](https://smp.readthedocs.io/en/latest/models.html) and [Supported encoders](https://smp.readthedocs.io/en/latest/encoders.html) |
+| Segmentation Models & Encoders | A flexible framework allowing users to combine various models and encoders. The default configuration uses a UNet++ model with an EfficientNet-B5 encoder. [Supported segmentation models](https://smp.readthedocs.io/en/latest/models.html) and [Supported encoders](https://smp.readthedocs.io/en/latest/encoders.html) |
 | Loss Functions | Supports multiple loss functions, with Dice Loss as the default to handle class imbalance. It also includes Tversky Loss to fine-tune the trade-off between false positives and false negatives. [Supported Loss functions](https://smp.readthedocs.io/en/latest/losses.html) |
-| Optimizer & Scheduler | Employs the Adam optimizer with a One-Cycle Learning rate scheduler to facilitate faster and more stable model training.  [Supported Optimizer](https://docs.pytorch.org/docs/stable/optim.html#algorithms) |
+| Optimizer & Scheduler | Employs the Adam optimizer with a One-Cycle Learning rate scheduler to facilitate faster and more stable model training. [Supported Optimizers](https://pytorch.org/docs/stable/optim.html#algorithms) |
 | **Spatial Regularization** | **(Refines the model's raw output for cleaner, more accurate boundaries)** |
 | CRF / CD-CRF Layer | A Conditional Random Field (CRF) layer is used as a post-processing step to refine coarse segmentation maps by enforcing spatial consistency. The novel Class-Discriminative CRF (CD-CRF) uses learned, class-discriminative features from the CNN instead of raw pixel intensities, making it more robust to high noise levels in cryo-EM data. |
 | CRF Solvers | Supports both the classic mean-field solver and a regularized Frank-Wolfe algorithm, which is the default due to its faster convergence and improved performance. |

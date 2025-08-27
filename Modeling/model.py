@@ -5,15 +5,38 @@ from convcrf import GaussCRF, ConvCRF
 
 
 def create_model(backbone, addout=True):
+    """
+    Creates a model wrapper for the backbone network.
+    
+    Args:
+        backbone: The backbone network (e.g., UNet, DeepLabV3)
+        addout (bool): Whether to add output wrapper. Defaults to True.
+        
+    Returns:
+        Model with or without output wrapper
+    """
     if addout:
         model = Model_Out(backbone)
     else:
         model = backbone
-    #model.classifier.add_module(name='output', module=nn.Softmax(dim=1))
     return model
 
 
 def create_crf_model(backbone, config, shape, num_classes, use_gpu=False, freeze_backbone=False):
+    """
+    Creates a model combining backbone network with Gaussian CRF layer.
+    
+    Args:
+        backbone: The backbone segmentation network
+        config: CRF configuration parameters
+        shape: Input image shape (height, width)
+        num_classes (int): Number of segmentation classes
+        use_gpu (bool): Whether to use GPU acceleration. Defaults to False.
+        freeze_backbone (bool): Whether to freeze backbone parameters. Defaults to False.
+        
+    Returns:
+        ModelWithGausscrf: Combined model with CRF post-processing
+    """
     if freeze_backbone:
         for params in backbone.parameters():
           params.requires_grad = False
@@ -22,13 +45,23 @@ def create_crf_model(backbone, config, shape, num_classes, use_gpu=False, freeze
 
 
 class Model_Out(nn.Module):
+    """
+    Wrapper class that standardizes backbone model output format.
+    Ensures consistent output structure across different backbone architectures.
+    """
     def __init__(self, backbone):
         super().__init__()
         self.backbone = backbone
     
     def forward(self, x):
         """
-        x is a batch of input images
+        Forward pass through the backbone network.
+        
+        Args:
+            x (torch.Tensor): Batch of input images [B, C, H, W]
+            
+        Returns:
+            OrderedDict: Dictionary containing 'out' key with logits
         """
         logits = self.backbone(x)
         return OrderedDict([
@@ -36,6 +69,10 @@ class Model_Out(nn.Module):
       ])
 
 class ModelWithGausscrf(nn.Module):
+    """
+    Combined model that applies Gaussian CRF post-processing to backbone predictions.
+    The CRF layer refines segmentation boundaries using spatial consistency constraints.
+    """
     def __init__(self, backbone, config, shape, num_classes, use_gpu=False):
         super().__init__()
         self.backbone = backbone
@@ -47,6 +84,15 @@ class ModelWithGausscrf(nn.Module):
                                  nclasses=self.num_classes, use_gpu= self.use_gpu)
 
     def forward(self, x):
+        """
+        Forward pass with CRF post-processing.
+        
+        Args:
+            x (torch.Tensor): Input images [B, C, H, W]
+            
+        Returns:
+            OrderedDict: Contains 'backbone' (raw predictions) and 'out' (CRF-refined)
+        """
         unary = self.backbone(x)['out']
         return OrderedDict([
           ('backbone', unary),

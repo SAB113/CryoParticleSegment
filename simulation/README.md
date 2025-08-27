@@ -1,10 +1,19 @@
 # Micrograph Simulation
 
-## Package Require:
+This module provides tools for generating synthetic cryo-EM micrographs with controlled noise levels and ground truth annotations. It enables researchers to create datasets for training and evaluating segmentation algorithms under known conditions.
+
+## Required Packages:
 - mrcfile
 - starfile
 - scikit-image
 - aspire
+
+## Overview:
+
+The simulation pipeline consists of three main components:
+1. **Clean micrograph generation**: Creates noise-free synthetic micrographs from 3D volumes
+2. **Noise addition**: Adds realistic noise at specified Signal-to-Noise Ratio (SNR) levels
+3. **Ground truth generation**: Creates perfect segmentation masks for training and evaluation
 
 ## Usage:
 
@@ -12,10 +21,11 @@
 
 Referring to [micrograph_simulation.ipynb](micrograph_simulation.ipynb) for the details about synthetic dataset generation.
 
-### Other useful utiliies
-#### Generate Simulated Micrograph without Noise
+### Command Line Tools
 
-To generate simulated micrograph without noise, use the following code:
+#### Generate Clean Simulated Micrographs
+
+Generate noise-free synthetic micrographs from a 3D volume and refinement results:
 
 ```bash
 python NoisyImageGenerator.py volume_path refine_result_path simulated_micrograph_directory
@@ -64,9 +74,9 @@ simulated_micrograph_directory/
     └── sim_image_83.star
 ```
 
-#### Generate Simulated Micrograph with Noise
+#### Add Realistic Noise
 
-To generate simulated micrograph with noise under given SNR (default: 0.1), use the following code:
+Add noise to clean synthetic micrographs at a specified Signal-to-Noise Ratio (default: 0.1):
 
 ```bash
 python NoisyImageGenerator.py simulated_micrograph_directory noisy_image_directory -snr 0.1
@@ -98,23 +108,29 @@ noisy_image_directory/
     └── sim_image_83.star
 ```
 
-#### Generate Ground Truth
+#### Create Ground Truth Masks
 
-To generate ground truth of the simulated micrographs, use the following code:
+Generate perfect segmentation masks for the synthetic micrographs:
 
 ```bash
 python GroundTruthGenerator.py simulated_micrograph_directory ground_truth_directory
 ```
 
-This command will generate ground truth of the simulated micrographs in the specified directory.
+This generates binary masks indicating particle locations for training segmentation models.
 
-Directory structure:
+**Output structure:**
 
 ```bash
-noisy_image_directory/
+ground_truth_directory/
 ├── sim_image_0.mrc
 ├── sim_image_0.star
 │   ...
 ├── sim_image_83.mrc
 └── sim_image_83.star
 ```
+
+## Notes:
+
+- All generated files maintain the `.mrc` format for images and `.star` format for particle coordinates
+- The simulation pipeline is designed to work with the ASPIRE library for realistic cryo-EM physics
+- Ground truth masks provide pixel-perfect annotations for supervised learning

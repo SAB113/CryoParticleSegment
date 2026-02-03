@@ -1,0 +1,19 @@
+你可以偵測並量化：
+
+透明層（ZP）完整度
+
+線段連續性
+破洞數量
+破裂長度 / 位置
+
+
+胚胎輪廓規則性（Contour Regularity）
+
+圓形度 (circularity)
+邊界崎嶇度 (roughness)
+
+
+外逸細胞（Extrusion）程度
+
+外逸細胞比例
+外逸距離

@@ -3,3 +3,28 @@
 3. 基於深度學習之醫療影像分析－應用於囊胚期胚胎之品質評估 Deep Learning-based Medical Image Analysis for Quality Assessment of Blastocyst-stage Embryos (114 海洋大學 改進[4])
 4. A novel approach to blastocyst quality assessment _可用以改良
 https://github.com/SAB113/CryoParticleSegment/tree/main
+
+
+主旨:討論胚囊（囊胚）孵化狀態與單一囊胚植入後妊娠結局之間的潛在關聯。
+
+孵化狀態被分為四類：
+
+未孵化（unhatched）
+早期孵化（early hatching，孵化部分小於透明帶直徑）
+晚期孵化（late hatching，孵化部分大於透明帶直徑）
+完全孵化（fully hatched）
+
+結果:
+晚期孵化組的臨床妊娠率與活產率皆顯著高於未孵化組（p = 0.001；p = 0.008）。
+
+
+內文:
+the degree of blastocyst expansion reflects the embryo’s developmental trajectory and physiological integrity and thus 
+affects the implantation potential.
+
+
+研究限制（Limitations and future）
+
+完全孵化組樣本數少
+孵化狀態屬視覺判讀 → 具主觀性
+單中心、回溯性研究
